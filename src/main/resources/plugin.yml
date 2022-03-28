@@ -1,0 +1,31 @@
+name: Utilities
+main: tk.yjservers.Utilities
+version: 1.0.0
+description: A plugin containing miscellaneous methods I wanted.
+commands:
+  endportal:
+    description: Get an end portal.
+    permission: utilities.endportal
+  login:
+    description: Login to your account.
+    permission: utilities.login
+  register:
+    description: Register a new account.
+    permission: utilities.register
+  unregister:
+    description: Unregister your account.
+    permission: utilities.unregister
+  setworldspawn:
+    description: Sets the world spawn location at the specified location. Use '~' as a placeholder for your location.
+    permission: utilities.setworldspawn
+permissions:
+  utilities.endportal:
+    default: op
+  utilities.login:
+    default: true
+  utilities.register:
+    default: true
+  utilities.unregister:
+    default: true
+  utilities.setworldspawn:
+    default: true

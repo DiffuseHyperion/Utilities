@@ -1,0 +1,64 @@
+SetPlayerCameraAndPos:
+  enabled: false
+  tponjoin: all
+  # Whether to teleport players who join to the specified location.
+  # Accepted values: newcomers, all
+  # Other values will have no effect.
+  location:
+    x: 0
+    # The plugin will automatically add 0.50 to teleport to the center of the block.
+    y: 70
+    z: 0
+    # The plugin will automatically add 0.50 to teleport to the center of the block.
+    # Add .50 to teleport to the center of the block.
+    yaw: 0
+    # A yaw of 0 or 360 represents the positive z direction.
+    # A yaw of 180 represents the negative z direction.
+    # A yaw of 90 represents the negative x direction.
+    # A yaw of 270 represents the positive x direction.
+    pitch: 90
+    # A pitch of 0 represents level forward facing.
+    # A pitch of 90 represents downward facing, or negative y direction.
+    # A pitch of -90 represents upward facing, or positive y direction.
+StopBreakBlock:
+  enabled: false
+  # self-explanatory bruh
+FullHunger:
+  enabled: false
+  # self-explanatory bruh
+Barrier:
+  # "Attempt" to make a barrier block, by faking a block change to air to all players.
+  # This will cause a rubber-banding effect
+  enabled: false
+  list:
+    # Format:
+    # x, y, z, world name
+    - 0, 70, 0, world
+Login:
+  enabled: false
+  required: false
+    # Does nothing atm
+  freezeatcampos: true
+    # Whether to freeze the joining player at the position set in SetPlayerAndCamPos.location.
+  blind:
+    beforelogin: true
+    # Blind the player before login.
+    afterlogin: false
+    # Continue to blind the player after login.
+Messages:
+  befenabled: false
+  aftenabled: false
+  befmessages:
+    # Messages to send. These messages will always send when a player joins.
+  # This must be filled if befenabled is true.
+  # - This is a message. The player has not logged in.
+  aftmessages:
+    # Messages to send. These messages will send when a player logins.
+    # This must be filled if aftenabled is true.
+  # - This is a message. The player has logged in.
+SetWorldSpawn:
+  enabled: falsee
+  teleport: newcomers
+  # Who should be teleported to the world spawn when they log in.
+  # Accepted values: all, newcomers
+  # All is more useful for lobbies.
