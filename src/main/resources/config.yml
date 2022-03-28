@@ -52,7 +52,7 @@ Messages:
     # The messages will send when a player joins, OR when a player logins, if they have an account.
   # - This is a message. The player has logged in.
 SetWorldSpawn:
-  enabled: falsee
+  enabled: false
   teleport: newcomers
   # Who should be teleported to the world spawn when they log in.
   # Accepted values: all, newcomers
