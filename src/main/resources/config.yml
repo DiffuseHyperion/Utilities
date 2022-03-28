@@ -46,15 +46,10 @@ Login:
     afterlogin: false
     # Continue to blind the player after login.
 Messages:
-  befenabled: false
-  aftenabled: false
-  befmessages:
-    # Messages to send. These messages will always send when a player joins.
-  # This must be filled if befenabled is true.
-  # - This is a message. The player has not logged in.
-  aftmessages:
-    # Messages to send. These messages will send when a player logins.
-    # This must be filled if aftenabled is true.
+  enabled: true
+  messages:
+    # Messages to send.
+    # The messages will send when a player joins, OR when a player logins, if they have an account.
   # - This is a message. The player has logged in.
 SetWorldSpawn:
   enabled: falsee

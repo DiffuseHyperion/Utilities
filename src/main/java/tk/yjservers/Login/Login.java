@@ -75,7 +75,7 @@ public class Login implements CommandExecutor, Listener{
                                 p.removePotionEffect(PotionEffectType.BLINDNESS);
                             }
                             p.sendMessage(ChatColor.GREEN + "You have logged in!");
-                            new SendMessages().sendAftMessages(p);
+                            new SendMessages().sendMessages(p);
                         } else {
                             p.sendMessage(ChatColor.RED + "Incorrect password!");
                         }
