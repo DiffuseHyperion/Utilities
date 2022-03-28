@@ -11,6 +11,7 @@ public class FullHunger implements Listener {
     public void onPlayerLoseHunger(FoodLevelChangeEvent e) {
         if (e.getEntity() instanceof Player) {
             e.setCancelled(true);
+            ((Player) e.getEntity()).setFoodLevel(20);
         }
     }
 }
