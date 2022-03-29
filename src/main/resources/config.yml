@@ -34,6 +34,12 @@ Barrier:
     # Format:
     # x, y, z, world name
     - 0, 70, 0, world
+Messages:
+  enabled: true
+  messages:
+  # Messages to send.
+  # The messages will send when a player joins, OR when a player logins, if they have an account.
+  # - This is a message. The player has logged in.
 Login:
   enabled: false
   required: false
@@ -45,12 +51,6 @@ Login:
     # Blind the player before login.
     afterlogin: false
     # Continue to blind the player after login.
-Messages:
-  enabled: true
-  messages:
-    # Messages to send.
-    # The messages will send when a player joins, OR when a player logins, if they have an account.
-  # - This is a message. The player has logged in.
 SetWorldSpawn:
   enabled: false
   teleport: newcomers

@@ -103,7 +103,7 @@ public class SetWorldSpawn implements CommandExecutor, Listener {
         Player p = e.getPlayer();
         p.setBedSpawnLocation(getLoc(p.getWorld()));
 
-        if (config.getString("teleport").equals("all")) {
+        if (config.getString("SetWorldSpawn.teleport").equals("all")) {
             tpPlayer(p);
         } else {
             if (!p.hasPlayedBefore()) {
