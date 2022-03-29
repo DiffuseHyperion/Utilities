@@ -99,6 +99,7 @@ public class Utilities extends JavaPlugin{
             }
             getLogger().info("Accounts loaded!");
         }
+        getLogger().info("Login loaded!");
 
         // KEEP THIS AT THE END OF THE METHOD
         spawnFile = getFile("spawns.yml");
@@ -123,6 +124,7 @@ public class Utilities extends JavaPlugin{
         }
         getCommand("setworldspawn").setExecutor(new SetWorldSpawn());
         getServer().getPluginManager().registerEvents(new SetWorldSpawn(), this);
+        getLogger().info("SetWorldSpawn loaded!");
     }
 
     private FileConfiguration getConfig(File datafile) {
@@ -138,7 +140,7 @@ public class Utilities extends JavaPlugin{
     
     private File getFile(String filename) {
         File file = new File(getDataFolder(), filename);
-        if (file.exists()) {
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
             saveResource(filename, true);
         } 
