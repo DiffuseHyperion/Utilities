@@ -106,31 +106,33 @@ public class Utilities extends JavaPlugin{
             getServer().getPluginManager().registerEvents(new SendMessages(), this);
         }
 
-        spawnFile = getFile("spawns.yml");
-        spawnConfig = getConfig(spawnFile);
-        boolean enablespawn = true;
-        if (spawnConfig.getKeys(false).isEmpty()) {
-            Bukkit.getLogger().warning("No signs found in spawns.yml, this may be an error!");
-        } else {
-            for (String s: spawnConfig.getKeys(false)) {
-                if (getServer().getWorld(s) == null) {
-                    getLogger().severe("Something went wrong while reading data.yml, was it changed manually?");
-                    getLogger().severe("Check if there is a section called: " + s + ", by using CTRL+F with your editor.");
-                    getLogger().severe("SetWorldSpawn section will not enable, to prevent further errors.");
-                    enablespawn = false;
-                }
-                World w = getServer().getWorld(s);
-                int x = spawnConfig.getInt(s + ".x");
-                int y = spawnConfig.getInt(s + ".y");
-                int z = spawnConfig.getInt(s + ".z");
+        if (config.getBoolean("SetWorldSpawn.enabled")) {
+            spawnFile = getFile("spawns.yml");
+            spawnConfig = getConfig(spawnFile);
+            boolean enablespawn = true;
+            if (spawnConfig.getKeys(false).isEmpty()) {
+                Bukkit.getLogger().warning("No signs found in spawns.yml, this may be an error!");
+            } else {
+                for (String s: spawnConfig.getKeys(false)) {
+                    if (getServer().getWorld(s) == null) {
+                        getLogger().severe("Something went wrong while reading data.yml, was it changed manually?");
+                        getLogger().severe("Check if there is a section called: " + s + ", by using CTRL+F with your editor.");
+                        getLogger().severe("SetWorldSpawn section will not enable, to prevent further errors.");
+                        enablespawn = false;
+                    }
+                    World w = getServer().getWorld(s);
+                    int x = spawnConfig.getInt(s + ".x");
+                    int y = spawnConfig.getInt(s + ".y");
+                    int z = spawnConfig.getInt(s + ".z");
 
-                spawns.add(new Location(w, x, y, z));
+                    spawns.add(new Location(w, x, y, z));
+                }
             }
-        }
-        if (enablespawn) {
-            getCommand("setworldspawn").setExecutor(new SetWorldSpawn());
-            getServer().getPluginManager().registerEvents(new SetWorldSpawn(), this);
-            getLogger().info("SetWorldSpawn loaded!");
+            if (enablespawn) {
+                getCommand("setworldspawn").setExecutor(new SetWorldSpawn());
+                getServer().getPluginManager().registerEvents(new SetWorldSpawn(), this);
+                getLogger().info("SetWorldSpawn loaded!");
+            }
         }
 
         if (config.getBoolean("Mutton.enabled")) {
