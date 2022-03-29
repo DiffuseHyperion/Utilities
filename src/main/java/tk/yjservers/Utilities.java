@@ -87,7 +87,8 @@ public class Utilities extends JavaPlugin{
             getServer().getPluginManager().registerEvents(new SendMessages(), this);
         }
 
-        accountConfig = getConfig("accounts.yml");
+        accountFile = getFile("accounts.yml");
+        accountConfig = getConfig(accountFile);
         if (accountConfig.getKeys(false).isEmpty()) {
             Bukkit.getLogger().warning("No accounts found in accounts.yml, this may be an error!");
         } else {
@@ -100,7 +101,8 @@ public class Utilities extends JavaPlugin{
         }
 
         // KEEP THIS AT THE END OF THE METHOD
-        spawnConfig = getConfig("spawns.yml");
+        spawnFile = getFile("spawns.yml");
+        spawnConfig = getConfig(spawnFile);
         if (spawnConfig.getKeys(false).isEmpty()) {
             Bukkit.getLogger().warning("No signs found in spawns.yml, this may be an error!");
         } else {
@@ -123,21 +125,23 @@ public class Utilities extends JavaPlugin{
         getServer().getPluginManager().registerEvents(new SetWorldSpawn(), this);
     }
 
-    private FileConfiguration getConfig(String filename) {
-        //create dataFile
-        File file = new File(getDataFolder(), filename);
-        if (file.exists()) {
-            file.getParentFile().mkdirs();
-            saveResource(filename, true);
-        }
-
+    private FileConfiguration getConfig(File datafile) {
         //load dataFile
         YamlConfiguration config = new YamlConfiguration();
         try {
-            config.load(file);
+            config.load(datafile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
         return config;
+    }
+    
+    private File getFile(String filename) {
+        File file = new File(getDataFolder(), filename);
+        if (file.exists()) {
+            file.getParentFile().mkdirs();
+            saveResource(filename, true);
+        } 
+        return file;
     }
 }
