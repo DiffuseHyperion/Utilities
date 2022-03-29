@@ -132,6 +132,11 @@ public class Utilities extends JavaPlugin{
             getServer().getPluginManager().registerEvents(new SetWorldSpawn(), this);
             getLogger().info("SetWorldSpawn loaded!");
         }
+
+        if (config.getBoolean("Mutton.enabled")) {
+            getServer().getPluginManager().registerEvents(new Mutton(), this);
+            getLogger().info("Mutton loaded!");
+        }
     }
 
     private FileConfiguration getConfig(File datafile) {
