@@ -25,9 +25,9 @@ public class Mutton implements Listener {
     @EventHandler
     public void onSheepKilled(EntityDeathEvent e) {
         Bukkit.getLogger().info("entity died");
-        if (e instanceof Sheep) {
+        if (e.getEntity() instanceof Sheep) {
             Bukkit.getLogger().info("is sheep");
-            Sheep sheep = (Sheep)e;
+            Sheep sheep = (Sheep) e.getEntity();
             if (sheep.isAdult()) {
                 e.getDrops().add(this.getRawMutton(sheep.getKiller().getItemInHand()));
             }
