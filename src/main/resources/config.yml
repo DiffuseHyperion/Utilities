@@ -35,7 +35,7 @@ Barrier:
     # x, y, z, world name
     - 0, 70, 0, world
 Messages:
-  enabled: true
+  enabled: false
   messages:
   # Messages to send.
   # The messages will send when a player joins, OR when a player logins, if they have an account.
