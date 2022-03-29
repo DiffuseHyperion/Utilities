@@ -24,9 +24,7 @@ public class Mutton implements Listener {
 
     @EventHandler
     public void onSheepKilled(EntityDeathEvent e) {
-        Bukkit.getLogger().info("entity died");
         if (e.getEntity() instanceof Sheep) {
-            Bukkit.getLogger().info("is sheep");
             Sheep sheep = (Sheep) e.getEntity();
             if (sheep.isAdult()) {
                 e.getDrops().add(this.getRawMutton(sheep.getKiller().getItemInHand()));
@@ -41,10 +39,11 @@ public class Mutton implements Listener {
         ItemStack source = e.getSource();
         net.minecraft.server.v1_5_R3.ItemStack nmsSource = CraftItemStack.asNMSCopy(source);
         NBTTagCompound sourcecompound = nmsSource.hasTag() ? nmsSource.getTag() : new NBTTagCompound();
+        Bukkit.getLogger().info(sourcecompound.getString("Mutton"));
 
         try {
             if (sourcecompound.getString("Mutton").equals("raw")) {
-                e.setResult(this.getCookedMutton(source.getAmount()));
+                e.setResult(this.getCookedMutton(source));
             }
         } catch (NullPointerException ignore) {
         }
@@ -95,21 +94,18 @@ public class Mutton implements Listener {
         return item;
     }
 
-    private ItemStack getCookedMutton(int quantity) {
-        ItemStack item = new ItemStack(Material.COOKED_BEEF);
+    private ItemStack getCookedMutton(ItemStack mutton) {
+        mutton.setType(Material.COOKED_BEEF);
 
-        item.setAmount(quantity);
-
-        ItemMeta meta = item.getItemMeta();
+        ItemMeta meta = mutton.getItemMeta();
         meta.setDisplayName("Cooked Mutton");
-        item.setItemMeta(meta);
+        mutton.setItemMeta(meta);
 
-        net.minecraft.server.v1_5_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_5_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(mutton);
         NBTTagCompound itemcompound = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
         itemcompound.set("Mutton", new NBTTagString("cooked"));
         nmsItem.setTag(itemcompound);
 
-        item = CraftItemStack.asBukkitCopy(nmsItem);
-        return item;
+        return CraftItemStack.asBukkitCopy(nmsItem);
     }
 }
