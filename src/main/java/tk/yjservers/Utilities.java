@@ -46,27 +46,44 @@ public class Utilities extends JavaPlugin{
 
     private void init() {
         getCommand("endportal").setExecutor(new PortalBlock());
+        getLogger().info("EndPortal has been enabled!");
+
         if (config.getBoolean("SetPlayerCameraAndPos.enabled")) {
             getLogger().info("SetPlayerCameraAndPos has been enabled!");
             getServer().getPluginManager().registerEvents(new SetCamAndPos(), this);
         }
+
         if (config.getBoolean("StopBreakBlock.enabled")) {
             getLogger().info("StopBreakBlock has been enabled!");
             getServer().getPluginManager().registerEvents(new StopBreakBlock(), this);
         }
+
         if (config.getBoolean("FullHunger.enabled")) {
             getLogger().info("FullHunger has been enabled!");
             getServer().getPluginManager().registerEvents(new FullHunger(), this);
         }
+
         if (config.getBoolean("Login.enabled")) {
-            getLogger().info("Login has been enabled!");
+            accountFile = getFile("accounts.yml");
+            accountConfig = getConfig(accountFile);
+            if (accountConfig.getKeys(false).isEmpty()) {
+                Bukkit.getLogger().warning("No accounts found in accounts.yml, this may be an error!");
+            } else {
+                for (String s : accountConfig.getKeys(false)) {
+                    String password = accountConfig.getString(s + ".password");
+                    passwords.put(s, password);
+                    getLogger().info("Registering: " + s);
+                }
+                getLogger().info("Accounts loaded!");
+            }
             getServer().getPluginManager().registerEvents(new Login(), this);
             getCommand("login").setExecutor(new Login());
             getCommand("register").setExecutor(new Register());
             getCommand("unregister").setExecutor(new Unregister());
+            getLogger().info("Login has been enabled!");
         }
+
         if (config.getBoolean("Barrier.enabled")) {
-            getLogger().info("Barrier has been enabled!");
             List <Location> list = new ArrayList<>();
             for (String s : config.getStringList("Barrier.list")) {
                 String[] strlist = s.split(", ");
@@ -81,30 +98,17 @@ public class Utilities extends JavaPlugin{
                 }
             }
             getServer().getPluginManager().registerEvents(new Barrier(list), this);
+            getLogger().info("Barrier has been enabled!");
         }
+
         if (config.getBoolean("Messages.enabled")) {
             getLogger().info("Messages has been enabled!");
             getServer().getPluginManager().registerEvents(new SendMessages(), this);
         }
 
-        accountFile = getFile("accounts.yml");
-        accountConfig = getConfig(accountFile);
-        if (accountConfig.getKeys(false).isEmpty()) {
-            Bukkit.getLogger().warning("No accounts found in accounts.yml, this may be an error!");
-        } else {
-            for (String s : accountConfig.getKeys(false)) {
-                String password = accountConfig.getString(s + ".password");
-                passwords.put(s, password);
-                getLogger().info("Registering: " + s);
-            }
-            getLogger().info("Accounts loaded!");
-        }
-        getLogger().info("Login loaded!");
-
-        // KEEP THIS AT THE END OF THE METHOD
         spawnFile = getFile("spawns.yml");
         spawnConfig = getConfig(spawnFile);
-        boolean enableSpawn = true;
+        boolean enablespawn = true;
         if (spawnConfig.getKeys(false).isEmpty()) {
             Bukkit.getLogger().warning("No signs found in spawns.yml, this may be an error!");
         } else {
@@ -113,7 +117,7 @@ public class Utilities extends JavaPlugin{
                     getLogger().severe("Something went wrong while reading data.yml, was it changed manually?");
                     getLogger().severe("Check if there is a section called: " + s + ", by using CTRL+F with your editor.");
                     getLogger().severe("SetWorldSpawn section will not enable, to prevent further errors.");
-                    enableSpawn = false;
+                    enablespawn = false;
                 }
                 World w = getServer().getWorld(s);
                 int x = spawnConfig.getInt(s + ".x");
@@ -123,14 +127,10 @@ public class Utilities extends JavaPlugin{
                 spawns.add(new Location(w, x, y, z));
             }
         }
-        if (enableSpawn) {
+        if (enablespawn) {
             getCommand("setworldspawn").setExecutor(new SetWorldSpawn());
             getServer().getPluginManager().registerEvents(new SetWorldSpawn(), this);
             getLogger().info("SetWorldSpawn loaded!");
-        }
-
-        if (config.getBoolean("Mutton.enabled")) {
-            getServer().getPluginManager().registerEvents(new Mutton(), this);
         }
     }
 
