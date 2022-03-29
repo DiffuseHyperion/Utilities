@@ -104,6 +104,7 @@ public class Utilities extends JavaPlugin{
         // KEEP THIS AT THE END OF THE METHOD
         spawnFile = getFile("spawns.yml");
         spawnConfig = getConfig(spawnFile);
+        boolean enableSpawn = true;
         if (spawnConfig.getKeys(false).isEmpty()) {
             Bukkit.getLogger().warning("No signs found in spawns.yml, this may be an error!");
         } else {
@@ -112,7 +113,7 @@ public class Utilities extends JavaPlugin{
                     getLogger().severe("Something went wrong while reading data.yml, was it changed manually?");
                     getLogger().severe("Check if there is a section called: " + s + ", by using CTRL+F with your editor.");
                     getLogger().severe("SetWorldSpawn section will not enable, to prevent further errors.");
-                    return;
+                    enableSpawn = false;
                 }
                 World w = getServer().getWorld(s);
                 int x = spawnConfig.getInt(s + ".x");
@@ -122,9 +123,15 @@ public class Utilities extends JavaPlugin{
                 spawns.add(new Location(w, x, y, z));
             }
         }
-        getCommand("setworldspawn").setExecutor(new SetWorldSpawn());
-        getServer().getPluginManager().registerEvents(new SetWorldSpawn(), this);
-        getLogger().info("SetWorldSpawn loaded!");
+        if (enableSpawn) {
+            getCommand("setworldspawn").setExecutor(new SetWorldSpawn());
+            getServer().getPluginManager().registerEvents(new SetWorldSpawn(), this);
+            getLogger().info("SetWorldSpawn loaded!");
+        }
+
+        if (config.getBoolean("Mutton.enabled")) {
+            getServer().getPluginManager().registerEvents(new Mutton(), this);
+        }
     }
 
     private FileConfiguration getConfig(File datafile) {

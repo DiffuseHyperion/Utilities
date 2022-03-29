@@ -57,3 +57,5 @@ SetWorldSpawn:
   # Who should be teleported to the world spawn when they log in.
   # Accepted values: all, newcomers
   # All is more useful for lobbies.
+Mutton:
+  enabled: false
