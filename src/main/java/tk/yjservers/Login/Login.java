@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
@@ -37,7 +38,9 @@ public class Login implements CommandExecutor, Listener{
             if (config.getBoolean("Login.blind.beforelogin")) {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, -1, true));
             }
-            scap.tpPlayer(p);
+            if (config.getBoolean("Login.freezeatcampos")) {
+                scap.tpPlayer(p);
+            }
             if (passwords.containsKey(pname)){
                 p.sendMessage(ChatColor.RED + "Please login to this account! Type /login (Your password)");
             } else {
@@ -49,14 +52,16 @@ public class Login implements CommandExecutor, Listener{
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, -1, true));
             }
             p.sendMessage(ChatColor.RED + "Please login to this account! Type /login (Your password)");
-            scap.tpPlayer(p);
+            if (notlogined.contains(p) && config.getBoolean("Login.freezeatcampos")) {
+                scap.tpPlayer(p);
+            }
         }
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e){
         Player p = e.getPlayer();
-        if (notlogined.contains(p)) {
+        if (notlogined.contains(p) && config.getBoolean("Login.freezeatcampos")) {
             scap.tpPlayer(p);
         }
     }
@@ -92,5 +97,14 @@ public class Login implements CommandExecutor, Listener{
             commandSender.sendMessage("This command can only be executed by a player!");
         }
         return true;
+    }
+
+    @EventHandler
+    public void cancelCommands(PlayerCommandPreprocessEvent e) {
+        Player p = e.getPlayer();
+        if (notlogined.contains(p) && !(e.getMessage().equalsIgnoreCase("/login") || e.getMessage().toLowerCase().matches("\\/login.+"))) {
+            e.setCancelled(true);
+            p.sendMessage(ChatColor.RED + "Please login first before sending any commands!");
+        }
     }
 }

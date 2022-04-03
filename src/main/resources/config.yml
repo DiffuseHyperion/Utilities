@@ -43,11 +43,10 @@ Messages:
 Login:
   enabled: false
   required: false
-    # Does nothing atm
   freezeatcampos: true
     # Whether to freeze the joining player at the position set in SetPlayerAndCamPos.location.
   blind:
-    beforelogin: true
+    beforelogin: false
     # Blind the player before login.
     afterlogin: false
     # Continue to blind the player after login.
@@ -57,5 +56,6 @@ SetWorldSpawn:
   # Who should be teleported to the world spawn when they log in.
   # Accepted values: all, newcomers
   # All is more useful for lobbies.
-Mutton:
+DaytimeSleep:
   enabled: false
+  maxdistancefrombed: 3

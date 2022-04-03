@@ -19,8 +19,8 @@ public class SendMessages implements Listener {
     }
 
     public void sendMessages(Player p) {
-        for (String s : config.getStringList("Messages.aftmessages")) {
-            p.sendMessage(s);
+        for (String s : config.getStringList("Messages.messages")) {
+            p.sendMessage(s.replace("&", "§"));
         }
     }
 }
