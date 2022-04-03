@@ -1,7 +1,6 @@
 package tk.yjservers;
 
 import net.minecraft.server.v1_5_R3.NBTTagCompound;
-import net.minecraft.server.v1_5_R3.NBTTagString;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftItemStack;
@@ -19,8 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Random;
 
 public class Mutton implements Listener {
-    public Mutton() {
-    }
 
     @EventHandler
     public void onSheepKilled(EntityDeathEvent e) {
@@ -87,7 +84,7 @@ public class Mutton implements Listener {
 
         net.minecraft.server.v1_5_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound itemcompound = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
-        itemcompound.set("Mutton", new NBTTagString("raw"));
+        itemcompound.setString("Mutton", "raw");
         nmsItem.setTag(itemcompound);
 
         item = CraftItemStack.asBukkitCopy(nmsItem);
@@ -103,7 +100,7 @@ public class Mutton implements Listener {
 
         net.minecraft.server.v1_5_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(mutton);
         NBTTagCompound itemcompound = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
-        itemcompound.set("Mutton", new NBTTagString("cooked"));
+        itemcompound.setString("Mutton", "cooked");
         nmsItem.setTag(itemcompound);
 
         return CraftItemStack.asBukkitCopy(nmsItem);
