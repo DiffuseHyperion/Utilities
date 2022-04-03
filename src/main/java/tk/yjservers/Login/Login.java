@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
@@ -96,5 +97,14 @@ public class Login implements CommandExecutor, Listener{
             commandSender.sendMessage("This command can only be executed by a player!");
         }
         return true;
+    }
+
+    @EventHandler
+    public void cancelCommands(PlayerCommandPreprocessEvent e) {
+        Player p = e.getPlayer();
+        if (notlogined.contains(p) && !(e.getMessage().equalsIgnoreCase("/login") || e.getMessage().toLowerCase().matches("\\/login.+"))) {
+            e.setCancelled(true);
+            p.sendMessage(ChatColor.RED + "Please login first before sending any commands!");
+        }
     }
 }
