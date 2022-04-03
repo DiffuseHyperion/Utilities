@@ -37,7 +37,9 @@ public class Login implements CommandExecutor, Listener{
             if (config.getBoolean("Login.blind.beforelogin")) {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, -1, true));
             }
-            scap.tpPlayer(p);
+            if (config.getBoolean("Login.freezeatcampos")) {
+                scap.tpPlayer(p);
+            }
             if (passwords.containsKey(pname)){
                 p.sendMessage(ChatColor.RED + "Please login to this account! Type /login (Your password)");
             } else {
@@ -49,14 +51,16 @@ public class Login implements CommandExecutor, Listener{
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, -1, true));
             }
             p.sendMessage(ChatColor.RED + "Please login to this account! Type /login (Your password)");
-            scap.tpPlayer(p);
+            if (notlogined.contains(p) && config.getBoolean("Login.freezeatcampos")) {
+                scap.tpPlayer(p);
+            }
         }
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e){
         Player p = e.getPlayer();
-        if (notlogined.contains(p)) {
+        if (notlogined.contains(p) && config.getBoolean("Login.freezeatcampos")) {
             scap.tpPlayer(p);
         }
     }
