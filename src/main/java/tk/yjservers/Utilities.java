@@ -45,8 +45,10 @@ public class Utilities extends JavaPlugin{
     }
 
     private void init() {
-        getCommand("endportal").setExecutor(new PortalBlock());
-        getLogger().info("EndPortal has been enabled!");
+        if (config.getBoolean("EndPortal.enabled")) {
+            getCommand("endportal").setExecutor(new PortalBlock());
+            getLogger().info("EndPortal has been enabled!");
+        }
 
         if (config.getBoolean("SetPlayerCameraAndPos.enabled")) {
             getLogger().info("SetPlayerCameraAndPos has been enabled!");
@@ -135,9 +137,9 @@ public class Utilities extends JavaPlugin{
             }
         }
 
-        if (config.getBoolean("Mutton.enabled")) {
-            getServer().getPluginManager().registerEvents(new Mutton(), this);
-            getLogger().info("Mutton loaded!");
+        if (config.getBoolean("DropSkull.enabled")) {
+            getServer().getPluginManager().registerEvents(new DropSkull(), this);
+            getLogger().info("DropSkull has been enabled!");
         }
     }
 

@@ -59,5 +59,7 @@ SetWorldSpawn:
 DaytimeSleep:
   enabled: false
   maxdistancefrombed: 3
-Mutton:
-  enabled: true
+EndPortal:
+  enabled: false
+DropSkull:
+  enabled: false
