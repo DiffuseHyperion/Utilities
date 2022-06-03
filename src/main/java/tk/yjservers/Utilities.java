@@ -141,6 +141,11 @@ public class Utilities extends JavaPlugin{
             getServer().getPluginManager().registerEvents(new DropSkull(), this);
             getLogger().info("DropSkull has been enabled!");
         }
+
+        if (config.getBoolean("Mutton.enabled")) {
+            getServer().getPluginManager().registerEvents(new Mutton(), this);
+            getLogger().info("Mutton has been enabled!");
+        }
     }
 
     private FileConfiguration getConfig(File datafile) {

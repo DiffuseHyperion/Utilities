@@ -1,7 +1,7 @@
 package tk.yjservers;
 
 import net.minecraft.server.v1_5_R3.NBTTagCompound;
-import org.bukkit.Bukkit;
+import net.minecraft.server.v1_5_R3.NBTTagString;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
@@ -19,12 +19,26 @@ import java.util.Random;
 
 public class Mutton implements Listener {
 
+    private final ItemStack rawMutton;
+    public Mutton() {
+        ItemStack item = new ItemStack(Material.RAW_BEEF);
+
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("Raw Mutton");
+        meta.addEnchant(Enchantment.DURABILITY, 1, true);
+        item.setItemMeta(meta);
+
+        rawMutton = setNBTTag(item, "mutton", "raw");
+    }
+
     @EventHandler
     public void onSheepKilled(EntityDeathEvent e) {
         if (e.getEntity() instanceof Sheep) {
             Sheep sheep = (Sheep) e.getEntity();
             if (sheep.isAdult()) {
-                e.getDrops().add(this.getRawMutton(sheep.getKiller().getItemInHand()));
+                ItemStack mutton = rawMutton;
+                setMuttonNumber(sheep.getKiller().getItemInHand(), mutton);
+                e.getDrops().add(mutton);
             }
         }
 
@@ -32,31 +46,15 @@ public class Mutton implements Listener {
 
     @EventHandler
     public void onMuttonSmelt(FurnaceSmeltEvent e) {
-        Bukkit.getLogger().info("smelted");
-        ItemStack source = e.getSource();
-        net.minecraft.server.v1_5_R3.ItemStack nmsSource = CraftItemStack.asNMSCopy(source);
-        NBTTagCompound sourcecompound = nmsSource.hasTag() ? nmsSource.getTag() : new NBTTagCompound();
-        Bukkit.getLogger().info(sourcecompound.getString("Mutton"));
-
-        try {
-            if (sourcecompound.getString("Mutton").equals("raw")) {
-                e.setResult(this.getCookedMutton(source));
-            }
-        } catch (NullPointerException ignore) {
-        }
-
     }
 
     @EventHandler
     public void onMuttonEat(PlayerItemConsumeEvent e) {
-        Bukkit.getLogger().info("consumed");
-        ItemStack source = e.getItem();
-        net.minecraft.server.v1_5_R3.ItemStack nmsSource = CraftItemStack.asNMSCopy(source);
-        NBTTagCompound sourcecompound = nmsSource.hasTag() ? nmsSource.getTag() : new NBTTagCompound();
         Player p = e.getPlayer();
-
+        ItemStack consumed = e.getItem();
+        /*
         try {
-            if (sourcecompound.getString("Mutton").equals("raw")) {
+            if (consumed.getItemMeta().equals(rawMutton.getItemMeta())) {
                 e.setCancelled(true);
                 p.getInventory().remove(e.getItem());
                 p.setFoodLevel(p.getFoodLevel() + 2);
@@ -69,40 +67,40 @@ public class Mutton implements Listener {
             }
         } catch (NullPointerException ignore) {
         }
+
+         */
+        if (getNBTTag(consumed, "mutton").equals("raw")) {
+            p.sendMessage("eaten raw mutton");
+        }
     }
 
-    private ItemStack getRawMutton(ItemStack weapon) {
-        ItemStack item = new ItemStack(Material.RAW_BEEF);
-
+    private void setMuttonNumber(ItemStack weapon, ItemStack item) {
         int lootingLevel = weapon.getEnchantments().getOrDefault(Enchantment.LOOT_BONUS_MOBS, 0);
         Random random = new Random();
         item.setAmount(random.nextInt(lootingLevel + 2) + 1);
-
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("Raw Mutton");
-        item.setItemMeta(meta);
-
-        net.minecraft.server.v1_5_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound itemcompound = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
-        itemcompound.setString("Mutton", "raw");
-        nmsItem.setTag(itemcompound);
-
-        item = CraftItemStack.asBukkitCopy(nmsItem);
-        return item;
     }
 
-    private ItemStack getCookedMutton(ItemStack mutton) {
-        mutton.setType(Material.COOKED_BEEF);
+    public net.minecraft.server.v1_5_R3.ItemStack getNMSItem(ItemStack item) {
+        return CraftItemStack.asNMSCopy(item);
+    }
 
-        ItemMeta meta = mutton.getItemMeta();
-        meta.setDisplayName("Cooked Mutton");
-        mutton.setItemMeta(meta);
+    public NBTTagCompound getCompound(ItemStack item) {
+        net.minecraft.server.v1_5_R3.ItemStack nmsItem = getNMSItem(item);
+        return (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
+    }
 
-        net.minecraft.server.v1_5_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(mutton);
-        NBTTagCompound itemcompound = nmsItem.hasTag() ? nmsItem.getTag() : new NBTTagCompound();
-        itemcompound.setString("Mutton", "cooked");
+    public ItemStack setNBTTag(ItemStack item, String tag, String value) {
+        net.minecraft.server.v1_5_R3.ItemStack nmsItem = getNMSItem(item);
+        NBTTagCompound itemcompound = getCompound(item);
+
+        itemcompound.set(tag, new NBTTagString(value));
         nmsItem.setTag(itemcompound);
-
         return CraftItemStack.asBukkitCopy(nmsItem);
+    }
+
+    public String getNBTTag(ItemStack item, String tag) {
+        NBTTagCompound itemcompound = getCompound(item);
+
+        return itemcompound.getString(tag);
     }
 }
