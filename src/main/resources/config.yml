@@ -64,4 +64,4 @@ EndPortal:
 DropSkull:
   enabled: false
 Mutton:
-  enabled: true
+  enabled: false
