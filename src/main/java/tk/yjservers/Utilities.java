@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import tk.yjservers.Login.Login;
 import tk.yjservers.Login.Register;
@@ -29,6 +30,8 @@ public class Utilities extends JavaPlugin{
     public static File spawnFile;
     public static List<Location> spawns = new ArrayList<>();
 
+    public static Plugin plugin;
+
 
     public void onEnable() {
         setConfig();
@@ -42,6 +45,7 @@ public class Utilities extends JavaPlugin{
     private void setConfig() {
         this.saveDefaultConfig();
         config = getConfig();
+        plugin = this;
     }
 
     private void init() {

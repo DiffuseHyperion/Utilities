@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import tk.yjservers.SendMessages;
@@ -18,8 +19,7 @@ import tk.yjservers.SetCamAndPos;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tk.yjservers.Utilities.config;
-import static tk.yjservers.Utilities.passwords;
+import static tk.yjservers.Utilities.*;
 
 public class Login implements CommandExecutor, Listener{
 
@@ -33,6 +33,14 @@ public class Login implements CommandExecutor, Listener{
         p.removePotionEffect(PotionEffectType.BLINDNESS);
         p.removePotionEffect(PotionEffectType.JUMP);
         p.removePotionEffect(PotionEffectType.SPEED);
+
+        if (!config.getStringList("Login.permissions").isEmpty()) {
+            PermissionAttachment attachment = p.addAttachment(plugin);
+            for (String s : config.getStringList("Login.permissions")) {
+                attachment.setPermission(s, false);
+            }
+        }
+
         if (config.getBoolean("Login.required")) {
             notlogined.add(p);
             if (config.getBoolean("Login.blind.beforelogin")) {
@@ -80,6 +88,14 @@ public class Login implements CommandExecutor, Listener{
                                 p.removePotionEffect(PotionEffectType.BLINDNESS);
                             }
                             p.sendMessage(ChatColor.GREEN + "You have logged in!");
+
+                            if (!config.getStringList("Login.permissions").isEmpty()) {
+                                PermissionAttachment attachment = p.addAttachment(plugin);
+                                for (String s1 : config.getStringList("Login.permissions")) {
+                                    attachment.setPermission(s1, true);
+                                }
+                            }
+
                             new SendMessages().sendMessages(p);
                         } else {
                             p.sendMessage(ChatColor.RED + "Incorrect password!");
@@ -102,7 +118,7 @@ public class Login implements CommandExecutor, Listener{
     @EventHandler
     public void cancelCommands(PlayerCommandPreprocessEvent e) {
         Player p = e.getPlayer();
-        if (notlogined.contains(p) && !(e.getMessage().equalsIgnoreCase("/login") || e.getMessage().toLowerCase().matches("\\/login.+"))) {
+        if (notlogined.contains(p) && !(e.getMessage().equalsIgnoreCase("/login") || e.getMessage().toLowerCase().matches("/login.+"))) {
             e.setCancelled(true);
             p.sendMessage(ChatColor.RED + "Please login first before sending any commands!");
         }

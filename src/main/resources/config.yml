@@ -43,8 +43,15 @@ Messages:
 Login:
   enabled: false
   required: false
+  # Whether an account is required for playing.
   freezeatcampos: true
     # Whether to freeze the joining player at the position set in SetPlayerAndCamPos.location.
+  permissions:
+    # Permissions to set to false for players not logged in.
+    # Permissions will be set to true when they log in.
+    # These permissions will be given to ALL players!
+    # Leave empty to disable.
+    - bungeecord.command.server
   blind:
     beforelogin: false
     # Blind the player before login.
