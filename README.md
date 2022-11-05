@@ -1,6 +1,9 @@
 # Utilities
 An amalgamation of functions and features into a single plugin
 
+## THIS HAS BEEN ARCHIVED!
+No longer required for my needs, so this has been archived
+
 # Current features:
 - StopBreakBlock (Stop blocks from breaking)
 
